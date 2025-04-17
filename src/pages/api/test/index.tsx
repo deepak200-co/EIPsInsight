@@ -20,7 +20,7 @@ const prDetailsSchema = new Schema({
     participants: { type: [String] },
     numParticipants: { type: Number },
     commits: { type: [Object] },
-    numCommits: { type: Number },
+    numCommits: { type: Number },   
     filesChanged: { type: [String] },
     numFilesChanged: { type: Number },
     mergedAt: { type: Date },

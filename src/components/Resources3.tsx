@@ -3,6 +3,7 @@ import Header from "./Header";
 import {
   useColorModeValue,
   Box,
+  Button,
   Tab,
   TabList,
   TabPanel,
@@ -38,7 +39,7 @@ const ResourcesPage: React.FC = () => {
   const accentColor = useColorModeValue("blue.500", "blue.300");
   const tabBg = useColorModeValue("white", "gray.700");
   const tabBorderColor = useColorModeValue("gray.200", "gray.600");
-  
+
   const tabSize = useBreakpointValue({ base: "sm", md: "md" });
   const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -60,6 +61,7 @@ const ResourcesPage: React.FC = () => {
   }, []);
 
 
+
   const Card = ({ image, title, content, link, tag }: { image?: string; title: string; content: string; link: string; tag?: string }) => (
     <Box
       bg={cardBg}
@@ -74,7 +76,7 @@ const ResourcesPage: React.FC = () => {
       }}
     >
       {image && (
-        <AspectRatio ratio={16/9} mb={4} borderRadius="lg" overflow="hidden">
+        <AspectRatio ratio={16 / 9} mb={4} borderRadius="lg" overflow="hidden">
           <Image src={image} alt={title} objectFit="cover" />
         </AspectRatio>
       )}
@@ -89,10 +91,10 @@ const ResourcesPage: React.FC = () => {
       <Text fontSize="md" color={textColor} noOfLines={3} mb={4}>
         {content}
       </Text>
-      <Link 
-        href={link} 
-        color={accentColor} 
-        fontWeight="semibold" 
+      <Link
+        href={link}
+        color={accentColor}
+        fontWeight="semibold"
         isExternal={!link.startsWith('/')}
         display="inline-flex"
         alignItems="center"
@@ -102,39 +104,42 @@ const ResourcesPage: React.FC = () => {
     </Box>
   );
 
-  const VideoCard = ({ url, title }: { url: string; title?: string }) => (
-    <Box
-      bg={cardBg}
-      p={0}
-      borderRadius="xl"
-      boxShadow="md"
-      overflow="hidden"
-      transition="all 0.2s ease"
-      _hover={{
-        transform: "translateY(-5px)",
-        boxShadow: "lg",
-      }}
-    >
-      <AspectRatio ratio={16/9}>
-        <iframe
-          width="100%"
-          height="100%"
-          src={url}
-          title={title || "EIPsInsight Video"}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-      </AspectRatio>
-      {title && (
-        <Box p={4}>
-          <Heading fontSize="lg" mb={2}>
-            {title}
-          </Heading>
-          <Link 
-            href={url.replace("embed/", "watch?v=")} 
-            color={accentColor} 
-            fontWeight="semibold" 
+  const VideoCard = ({ url }: { url: string }) => {
+    const embedUrl = url
+      .replace("watch?v=", "embed/")
+      .replace("youtu.be/", "youtube.com/embed/");
+
+    return (
+      <Box
+        bg={cardBg}
+        p={0}
+        borderRadius="xl"
+        boxShadow="md"
+        overflow="hidden"
+        transition="all 0.2s ease"
+        _hover={{
+          transform: "translateY(-3px)",
+          boxShadow: "lg",
+        }}
+        width="100%"
+      >
+        <AspectRatio ratio={16 / 9}>
+          <iframe
+            width="100%"
+            height="100%"
+            src={embedUrl}
+            title="EIPsInsight Video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </AspectRatio>
+        <Box p={3}>
+          <Link
+            href={url.replace("embed/", "watch?v=").replace("youtube.com/embed/", "youtu.be/")}
+            color={accentColor}
+            fontSize="sm"
+            fontWeight="semibold"
             isExternal
             display="inline-flex"
             alignItems="center"
@@ -142,9 +147,9 @@ const ResourcesPage: React.FC = () => {
             Watch on YouTube →
           </Link>
         </Box>
-      )}
-    </Box>
-  );
+      </Box>
+    );
+  };
 
   const TOOLS = [
     {
@@ -188,25 +193,25 @@ const ResourcesPage: React.FC = () => {
   const FAQs = [
     {
       title: "What is an Ethereum Improvement Proposal (EIP)?",
-      content: "An overview of account abstraction, EOA, Contract, EIP-86, EIP-2938, EIP-4337, sponsored transaction and more.",
+      content: "EIP stands for Ethereum Improvement Proposal. An EIP is a design document providing information to the Ethereum community,",
       link: "/FAQs/EIP",
       tag: "Beginner"
     },
     {
       title: "What is an Ethereum Request for Change (ERC)?",
-      content: "Need, Proposal, Churn Limit, Managing Validator Exits & Activations",
+      content: "The goal of Ethereum Request for Change (ERCs) is to standardize and provide high-quality documentation for the Ethereum application layer.",
       link: "/FAQs/ERC",
       tag: "Intermediate"
     },
     {
       title: "What is an Rollup Improvement Proposal (RIP)?",
-      content: "Devnet 8 Specs, Challenges in Devnet 7, Geth-Related Bugs & c-kzg Library",
+      content: "A Rollup Improvement Proposal (RIP) is a formal document that outlines new features, processes, or optimizations for rollup solutions",
       link: "/FAQs/RIP",
       tag: "Advanced"
     },
     {
       title: "What is EIPsInsight?",
-      content: "EIP proposes BLOBBASEFEE opcode for smart contracts to manage blob data costs efficiently. It enables trustless accounting and blob gas futures.",
+      content: "EIPsInsight is specialized in toolings designed to provide clear, visual insights into the activity of Ethereum Improvement Proposals (EIPs), Ethereum Request for Comments (ERCs), and Rollup Improvement Proposals (RIPs) over a specified period.",
       link: "/About",
       tag: "About"
     },
@@ -302,77 +307,89 @@ const ResourcesPage: React.FC = () => {
   ];
 
   const VIDEOS = [
-    {
-      url: "https://www.youtube.com/embed/AyidVR6X6J8?start=8",
-      title: "Introduction to EIPsInsight"
-    },
-    {
-      url: "https://youtu.be/sIr6XX8yR8o?si=csIwXAls_fm7Hfcx",
-      title: "How to Submit an EIP"
-    },
-    {
-      url: "https://youtu.be/dEgBVAzY6Eg?si=1CVqeBFXepeji-Ik",
-      title: "Understanding ERC Standards"
-    },
-    {
-      url: "https://www.youtube.com/watch?v=nJ57mkttCH0",
-      title: "Ethereum Improvement Process Explained"
-    },
-    {
-      url: "https://youtu.be/V75TPvK-K_s?si=KDQI5kP4y-2-9bka",
-      title: "Advanced EIP Development"
-    },
-    {
-      url: "https://youtu.be/fwxkbUaa92w?si=uHze3y_--2JfYMjD",
-      title: "Community Contributions"
-    },
+    "https://www.youtube.com/embed/AyidVR6X6J8?start=8",
+    "https://youtu.be/sIr6XX8yR8o?si=csIwXAls_fm7Hfcx",
+    "https://youtu.be/dEgBVAzY6Eg?si=1CVqeBFXepeji-Ik",
+    "https://www.youtube.com/watch?v=nJ57mkttCH0",
+    "https://youtu.be/V75TPvK-K_s?si=KDQI5kP4y-2-9bka",
+    "https://youtu.be/fwxkbUaa92w?si=uHze3y_--2JfYMjD",
+    "https://www.youtube.com/embed/YuEA-jE2Z8c",
+    "https://www.youtube.com/embed/videoseries?list=PL4cwHXAawZxpnKFDl1KzGOKqwux5JaLlv",
+    "https://www.youtube.com/embed/videoseries?list=PL4cwHXAawZxpok0smGmq-dFGVHQzW84a2",
   ];
+
+
+  const [currentVideoPage, setCurrentVideoPage] = useState(0);
+  const videosPerPage = 4;
+
+  const paginatedVideos = VIDEOS.slice(
+    currentVideoPage * videosPerPage,
+    (currentVideoPage + 1) * videosPerPage
+  );
+
+  const totalVideoPages = Math.ceil(VIDEOS.length / videosPerPage);
 
   const FAQContent = () => (
     <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={8}>
-     <Box>
-    <AspectRatio ratio={9/ 10} mb={8}>
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{ borderRadius: "12px", objectFit: "cover" }}
-      >
-        <source src="/single.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    </AspectRatio>
-       
+      <Box width="100%"
+      position="relative"
+      overflow="hidden"
+      borderRadius="xl"
+      boxShadow="md" >
+        <AspectRatio ratio={9/10} maxH="600px">
+          <video autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            position: 'absolute',
+            top: 0,
+            left: 0}}
+          >
+            <source src="/single.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </AspectRatio>
+
       </Box>
-      
+
       <Box>
-      <Image 
+        <Image
           src="/faq_resources4.png" 
           alt="FAQ Illustration" 
           borderRadius="xl" 
           boxShadow="md"
+          mb={6}
         />
-        <Heading size="lg" mb={6} display="flex" alignItems="center" gap={2}>
+        <Heading size="xl" // Increased from lg to xl
+        mb={8} 
+        display="flex" 
+        alignItems="center" 
+        gap={3}
+        fontSize={{ base: "2xl", md: "3xl" }} 
+        >
           <Icon as={FaQuestionCircle} color={accentColor} /> Frequently Asked Questions
         </Heading>
         <Accordion allowToggle>
           {FAQs.map((item, index) => (
             <AccordionItem key={index} mb={4} borderWidth="1px" borderRadius="lg" overflow="hidden">
-              <AccordionButton 
+              <AccordionButton
                 bg={cardBg}
                 _hover={{ bg: useColorModeValue("gray.100", "gray.700") }}
                 p={4}
               >
                 <Box flex="1" textAlign="left">
-                  <Heading size="sm">{item.title}</Heading>
+                  <Heading size="md">{item.title}</Heading>
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
               <AccordionPanel pb={4} bg={useColorModeValue("gray.50", "gray.700")}>
                 <Text mb={3}>{item.content}</Text>
                 <NextLink href={item.link} passHref legacyBehavior>
-                  <Link 
+                  <Link
                     color={accentColor}
                     fontWeight="semibold"
                     display="inline-flex"
@@ -419,11 +436,52 @@ const ResourcesPage: React.FC = () => {
           <Heading size="lg" mb={6} display="flex" alignItems="center" gap={2}>
             <Icon as={FaYoutube} color={accentColor} /> Video Tutorials & Guides
           </Heading>
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-            {VIDEOS.map((item, index) => (
-              <VideoCard key={index} {...item} />
+
+          <SimpleGrid
+            columns={{ base: 1, sm: 2 }}
+            spacing={4}
+            maxW="auto"  // Constrain the maximum width
+            mx="auto"   // Center the grid
+          >
+            {paginatedVideos.map((url, index) => (
+              <VideoCard key={index} url={url} />
             ))}
           </SimpleGrid>
+          {totalVideoPages > 1 && (
+            <Flex justify="center" mt={6}>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  onClick={() => setCurrentVideoPage(prev => Math.max(prev - 1, 0))}
+                  disabled={currentVideoPage === 0}
+                  size="sm"
+                  colorScheme="blue"
+                  variant="outline"
+                >
+                  Previous
+                </Button>
+                {Array.from({ length: totalVideoPages }).map((_, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => setCurrentVideoPage(index)}
+                    colorScheme={currentVideoPage === index ? 'blue' : 'gray'}
+                    size="sm"
+                    variant={currentVideoPage === index ? 'solid' : 'outline'}
+                  >
+                    {index + 1}
+                  </Button>
+                ))}
+                <Button
+                  onClick={() => setCurrentVideoPage(prev => Math.min(prev + 1, totalVideoPages - 1))}
+                  disabled={currentVideoPage === totalVideoPages - 1}
+                  size="sm"
+                  colorScheme="blue"
+                  variant="outline"
+                >
+                  Next
+                </Button>
+              </Stack>
+            </Flex>
+          )}
         </Box>
       )
     },
@@ -470,7 +528,7 @@ const ResourcesPage: React.FC = () => {
             </Flex>
             <Text mb={4} color={textColor}>{tool.description}</Text>
             <NextLink href={tool.link} passHref legacyBehavior>
-              <Link 
+              <Link
                 color={accentColor}
                 fontWeight="semibold"
                 display="inline-flex"
@@ -487,25 +545,25 @@ const ResourcesPage: React.FC = () => {
   return (
     <Box bg={bg} minH="100vh">
       <Header title="Resources" subtitle="Learn, explore, and stay updated with Ethereum improvements" />
-      
+
       <Box maxW="7xl" mx="auto" px={{ base: 4, md: 8 }} py={8}>
         <Center mb={8}>
-          <Tabs 
-            index={tabIndex} 
-            onChange={setTabIndex} 
+          <Tabs
+            index={tabIndex}
+            onChange={setTabIndex}
             variant="unstyled"
             isFitted={isMobile}
           >
-            <TabList 
-              display="flex" 
-              flexWrap="wrap" 
+            <TabList
+              display="flex"
+              flexWrap="wrap"
               justifyContent="center"
               gap={2}
               bg="transparent"
             >
               {tabContent.map((tab, index) => (
-                <Tab 
-                  key={index} 
+                <Tab
+                  key={index}
                   onClick={() => handleSelection(tab.label)}
                   fontSize={tabSize}
                   fontWeight="semibold"
@@ -514,9 +572,10 @@ const ResourcesPage: React.FC = () => {
                   borderColor={tabIndex === index ? accentColor : tabBorderColor}
                   borderRadius="lg"
                   py={3}
-                  px={6}
-                  mx={1}
-                  _selected={{ 
+                  px={2}
+                  flex={1}
+                  mx={0.5}
+                  _selected={{
                     color: "white",
                     bg: accentColor,
                     boxShadow: "md",
@@ -525,16 +584,18 @@ const ResourcesPage: React.FC = () => {
                     bg: useColorModeValue("gray.100", "gray.600"),
                   }}
                   transition="all 0.2s ease"
-                  minW={{ base: "120px", md: "150px" }}
+                  minW={{ base: "auto", md: "200px" }}
+                  maxW={{md:"250px"}}
+                  
                 >
-                  <Stack direction="row" align="center" spacing={2}>
+                  <Stack direction="row" align="center" justify="center" spacing={2}>
                     <Icon as={tab.icon} />
                     {!isMobile && <Text>{tab.label}</Text>}
                   </Stack>
                 </Tab>
               ))}
             </TabList>
-            
+
             <TabPanels mt={8}>
               {tabContent.map((tab, index) => (
                 <TabPanel key={index} px={0}>
